@@ -5,7 +5,7 @@ Created on Mon Nov 20 17:03:37 2017
 @author: nbody
 """
 
-from triversity_unified8 import triversity
+from triversity_lib import triversity
 
 #here an exemple of main to compute the diversity
 #here it's the collective and the mean of individual of shannon

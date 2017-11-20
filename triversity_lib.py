@@ -6,10 +6,8 @@ Created on Fri Oct 27 20:31:43 2017
 """
 
 
-#un arbre c'est un dictionnaire, on tranforme le path de list en string et on déscend
-#ça fait pas mal de tranformations list <-> string mais c'est de la taille des chemins ça devrait aller
 
-
+#auxilaries functions 
 import math
 
 def read_file_p (file,separator, fu, step_printer, toprint):
@@ -79,8 +77,8 @@ class triversity:
     
     #care it need 2 s its a list of dictionnary (node,linked tree)
     #a linked tree is a dictionnary path -> distribution
-    #the path is a string 
-    #a distribution is a dictionnary node -> weight
+    #the path is a tuple
+    #a distribution is a dictionnary node -> weight (probability)
         self.res = dict()
         self.saved = set()
         #will save if a result have been spread 
