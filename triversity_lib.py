@@ -157,10 +157,10 @@ class triversity:
                 self.add_link(pid1,n1,pid2,n2,w,doRename)
             except:
                     print("error importing that:",v)
-            read_file(file,  " ", fread)
+        read_file(file,  " ", fread)
         
     #same thing but print the evolution
-    def import_file_2(self,file,stepprinter, toprint,doRename=True,):
+    def import_file_2(self,file,stepprinter, toprint,doRename=True):
         def fread(v):
             try :
                 pid1 = int(v[0])
@@ -233,7 +233,7 @@ class triversity:
         #n0 = number of nodes in the first part of the path
         #n1 = number of nodes in the last part of the path
         return [0,0,dict()]
-    def div_add(self,v,dres):
+    def div_add(self,v,dres,node):
         #this step is the hard to parallelise
         v[0] += 1
         v[1] += self.div1(dres)
@@ -267,16 +267,16 @@ class triversity:
                 if (doSave and (len(path) > 2) ):
                     tree = self.new_tree(c[0],path0)
                 dres = self.compute_spread_one_path(d, path1,new_path,doSave,tree,path,i_split)
-                self.div_add(v,dres)
+                self.div_add(v,dres,c[0])
         else:
             last_path = path[:i_split]
             path1 = last_path[-1]
             new_path = path[i_split:]
             print("Already spread until:" + str(last_path))
-            for tree in self.linkedTrees[path[0]].values():
+            for node,tree in self.linkedTrees[path[0]].items():
                 d = tree[last_path]
                 dres = self.compute_spread_one_path(d,path1,new_path,doSave,tree,path,i_split)
-                self.div_add(v,dres)
+                self.div_add(v,dres,node)
         res = self.div_return(v)
         self.res[path] = res
         if(doSave):
@@ -286,7 +286,7 @@ class triversity:
     
     #here a div for the individual spread
     def div_ind(self,d):
-        return self.div1(d),d
+        return self.div1(d)
         
     
     def find_last_saved_by_tree(self,path,node,tree):
@@ -333,20 +333,4 @@ class triversity:
 
         
 
-import time 
 
-#here an exemple of main
-def main(nbpart,filelist,doSave):
-    ti= time.time()
-    t = triversity(nbpart) #create the object
-    for file in filelist:
-        t.import_file_2(file,100000,"Import "+ file) #import the file
-        print("Time:", time.time()- ti)
-    print("End import.")
-    print(time.time() -ti)
-    t.normalise_all() #normalise every dictionnaries
-    print("End normalisation.")
-    print(time.time() -ti)
-    print(t.spread_and_divs((1,2,3),doSave)) #spread and compute the div
-    print(time.time() -ti)
-    return t
